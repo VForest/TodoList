@@ -1,22 +1,39 @@
 import { Component, OnInit } from '@angular/core';
-import {Todo} from '../todo';
+import { MessageService } from '../message.service';
+import { Todo } from '../todo';
+import { TodoService } from '../todo.service';
 
 @Component({
   selector: 'app-todos',
   templateUrl: './todos.component.html',
-  styleUrls: ['./todos.component.scss']
+  styleUrls: ['./todos.component.scss'],
 })
 export class TodosComponent implements OnInit {
+  selectedTodo?: Todo;
 
-  todo: Todo={
-    id: 1,
-    desc: "Faire l'épicerie"
-  };
+  todos: Todo[] = [];
 
-  constructor() { }
+  constructor(
+    private todoService: TodoService,
+    private messageService: MessageService
+  ) {}
 
-  ngOnInit(): void {
-
+  ngOnInit() {
+    this.todoService.todos.subscribe((todos) => (this.todos = todos));
   }
 
+  onSelect(todo: Todo): void {
+    this.selectedTodo = todo;
+    this.messageService.add(`TodosComponent: Selected todo id=${todo.id}`);
+  }
+
+  delete(todo: Todo): void {
+    this.messageService.add(`TodoService: deleting todo id=${todo.id}`);
+    this.todoService.deleteTodo(todo.id).subscribe();
+  }
+
+  complete(todo: Todo): void {
+    this.messageService.add(`TodoService: completing todo id=${todo.id}`);
+    this.todoService.completeTodo(todo).subscribe();
+  }
 }

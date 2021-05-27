@@ -1,7 +1,25 @@
-<body>
-  <h1>{{title}}</h1>
+<mat-toolbar color="primary" [class.mat-elevation-z10]="true">
+  <button mat-icon-button>
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>Todo list</span>
+</mat-toolbar>
+
+<div class="wrapper-content">
+  <div class="searchbar">
+    <app-searchbar></app-searchbar>
+  </div>
 
   <div class="todos">
     <app-todos></app-todos>
   </div>
-</body>
+</div>
+
+<div class="wrapper-footer">
+  <app-messages></app-messages>
+</div>
+
+<mat-toolbar color="primary" class="footer" [class.mat-elevation-z24]="true">
+  <mat-icon>copyright</mat-icon>
+  <span>Vincent Forest - 2021</span>
+</mat-toolbar>

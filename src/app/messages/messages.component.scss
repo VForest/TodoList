@@ -1,0 +1,28 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 150px;
+}
+
+.messages{
+  max-height: 55px;
+  overflow: auto;
+}
+
+.messageService{
+  padding: 5px;
+}
+
+.clear{
+  width: fit-content;
+  align-self: center;
+  margin: 5px 5px;
+}
+
+h2{
+  margin-bottom: 0;
+  padding-top: 5px;
+  border-top: #673ab7 2px solid;
+}
+

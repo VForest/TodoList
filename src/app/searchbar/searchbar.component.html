@@ -1,0 +1,29 @@
+<div id="barreCreation">
+  <form>
+    <div class="field">
+      <mat-form-field class="field">
+        <mat-label>Create a new task</mat-label>
+        <input matInput #todoDesc />
+        <button
+          mat-icon-button
+          color="primary"
+          matSuffix
+          (click)="add(todoDesc.value); todoDesc.value = ''"
+        >
+          <mat-icon class="mat-18">add_task</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+    <div class="field">
+      <mat-form-field>
+        <mat-label>Select</mat-label>
+        <mat-select [(value)]="selected" (selectionChange)="filterTodos(selected)">
+          <mat-option value="all">All</mat-option>
+          <mat-option value="completed">Completed</mat-option>
+          <mat-option value="uncompleted">Uncompleted</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+</div>

@@ -1,4 +1,10 @@
-span{
-  text-align: center;
-  font-size: 2rem;
+* {
+  box-sizing: border-box;
 }
+
+.completed{
+  text-decoration: line-through;
+  opacity: 50%;
+  transition: 0,5s all ease;
+}
+

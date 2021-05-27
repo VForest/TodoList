@@ -1,0 +1,19 @@
+<h2>Messages</h2>
+
+<div *ngIf="messageService.messages.length" class="messageService">
+  <div class="messages">
+    <div *ngFor="let message of messageService.messages">{{ message }}</div>
+  </div>
+</div>
+<button
+  mat-raised-button
+  color="primary"
+  class="clear"
+  (click)="openDialog()"
+>
+  Clear messages
+</button>
+
+<!--
+  (click)="messageService.clear()"
+-->
