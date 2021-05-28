@@ -22,6 +22,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DeleteMessageDialogComponent } from './delete-message-dialog/delete-message-dialog.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { TodoContent } from './todo-content/todo-content.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,7 @@ import { DeleteMessageDialogComponent } from './delete-message-dialog/delete-mes
     SearchbarComponent,
     MessagesComponent,
     DeleteMessageDialogComponent,
+    TodoContent
   ],
   entryComponents: [DeleteMessageDialogComponent],
   imports: [
@@ -51,6 +54,7 @@ import { DeleteMessageDialogComponent } from './delete-message-dialog/delete-mes
     MatListModule,
     MatToolbarModule,
     MatDialogModule,
+    FlexLayoutModule,
   ],
   providers: [
     {

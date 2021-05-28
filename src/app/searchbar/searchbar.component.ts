@@ -23,6 +23,6 @@ export class SearchbarComponent implements OnInit {
   }
 
   filterTodos(value: string): void {
-    this.todoService.filterTodos(value).subscribe();
+    this.todoService.filterTodos(value);
   }
 }

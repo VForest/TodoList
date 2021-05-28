@@ -1,25 +1,22 @@
-<mat-toolbar color="primary" [class.mat-elevation-z10]="true">
-  <button mat-icon-button>
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>Todo list</span>
-</mat-toolbar>
-
-<div class="wrapper-content">
-  <div class="searchbar">
-    <app-searchbar></app-searchbar>
+<div fxLayout="column" fxFlexFill>
+  <mat-toolbar color="primary" [class.mat-elevation-z10]="true" id="header">
+    <button mat-icon-button>
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>Todo list</span>
+  </mat-toolbar>
+  <div fxFlex="grow" id="content">
+    <todo-content></todo-content>
   </div>
-
-  <div class="todos">
-    <app-todos></app-todos>
-  </div>
+  <mat-toolbar
+    class="footer"
+    color="primary"
+    [class.mat-elevation-z24]="true"
+    fxLayout="row"
+    fxLayoutAlign="end center"
+    id="footer"
+  >
+    <mat-icon>copyright</mat-icon>
+    <span>Vincent Forest - 2021</span>
+  </mat-toolbar>
 </div>
-
-<div class="wrapper-footer">
-  <app-messages></app-messages>
-</div>
-
-<mat-toolbar color="primary" class="footer" [class.mat-elevation-z24]="true">
-  <mat-icon>copyright</mat-icon>
-  <span>Vincent Forest - 2021</span>
-</mat-toolbar>

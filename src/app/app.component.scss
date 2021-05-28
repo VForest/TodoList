@@ -1,27 +1,8 @@
 :host {
-  display: flex;
-  flex-direction: column;
   height: 100%;
 }
 
-.wrapper-content {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  align-items: center;
-}
-.todos{
-  max-width: 50%;
-}
-
-.wrapper-footer {
-  text-align: center;
-}
-
-.footer{
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+.footer {
   font-size: small;
   height: 35px;
 }

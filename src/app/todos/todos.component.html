@@ -1,9 +1,16 @@
 <mat-list>
   <mat-list-item *ngFor="let todo of todos" (click)="onSelect(todo)">
     <p matLine>
-      <span class="todo" [class.completed]="todo.isCompleted">#{{ todo.id }}: {{ todo.desc }}</span>
+      <span class="todo" [class.completed]="todo.isCompleted"
+        >#{{ todo.id }}: {{ todo.desc }}</span
+      >
     </p>
-    <button (click)="complete(todo)" mat-icon-button color="primary" [class.completed]="todo.isCompleted">
+    <button
+      (click)="complete(todo)"
+      mat-icon-button
+      color="primary"
+      [class.completed]="todo.isCompleted"
+    >
       <mat-icon *ngIf="!todo.isCompleted">done</mat-icon>
       <mat-icon *ngIf="todo.isCompleted">undo</mat-icon>
     </button>

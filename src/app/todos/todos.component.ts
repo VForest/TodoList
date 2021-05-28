@@ -34,6 +34,8 @@ export class TodosComponent implements OnInit {
 
   complete(todo: Todo): void {
     this.messageService.add(`TodoService: completing todo id=${todo.id}`);
-    this.todoService.completeTodo(todo).subscribe();
+    this.todoService
+      .completeTodo(todo)
+      .subscribe(() => this.todoService.executeFilterTodos());
   }
 }

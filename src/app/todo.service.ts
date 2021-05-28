@@ -12,6 +12,7 @@ export class TodoService {
   private _todos: Todo[] = [];
   private todosSubject = new BehaviorSubject<Todo[]>(this._todos);
   todos = this.todosSubject.asObservable();
+  filtervalue: string = '';
 
   static count = 0;
 
@@ -79,40 +80,58 @@ export class TodoService {
     );
   }
 
-  filterTodos(value: string): Observable<Todo[]> {
-    if (value === 'completed') {
-      this.messageService.add('TodoService: filtering todos: ' + value);
-      return this.http.get<Todo[]>(this.todosUrl).pipe(
-        map((todos) => todos.filter((todo) => todo.isCompleted === true)),
-        tap((todos) => {
-          this.log('filtered todos');
-          this._todos = todos;
-          this.todosSubject.next(this._todos);
-        }),
-        catchError(this.handleError<Todo[]>('filterTodos', []))
+  filterTodos(value: string) {
+    this.filtervalue = value;
+    this.executeFilterTodos();
+  }
+
+  executeFilterTodos() {
+    if (this.filtervalue === 'completed') {
+      this.messageService.add(
+        'TodoService: filtering todos: ' + this.filtervalue
       );
-    } else if (value === 'uncompleted') {
-      this.messageService.add('TodoService: filtering todos: ' + value);
-      return this.http.get<Todo[]>(this.todosUrl).pipe(
-        map((todos) => todos.filter((todo) => todo.isCompleted === false)),
-        tap((todos) => {
-          this.log('filtered todos');
-          this._todos = todos;
-          this.todosSubject.next(this._todos);
-        }),
-        catchError(this.handleError<Todo[]>('filterTodos', []))
+      this.http
+        .get<Todo[]>(this.todosUrl)
+        .pipe(
+          map((todos) => todos.filter((todo) => todo.isCompleted === true)),
+          tap((todos) => {
+            this.log('filtered todos');
+            this._todos = todos;
+            this.todosSubject.next(this._todos);
+          }),
+          catchError(this.handleError<Todo[]>('filterTodos', []))
+        )
+        .subscribe();
+    } else if (this.filtervalue === 'uncompleted') {
+      this.messageService.add(
+        'TodoService: filtering todos: ' + this.filtervalue
       );
+      this.http
+        .get<Todo[]>(this.todosUrl)
+        .pipe(
+          map((todos) => todos.filter((todo) => todo.isCompleted === false)),
+          tap((todos) => {
+            this.log('filtered todos');
+            this._todos = todos;
+            this.todosSubject.next(this._todos);
+          }),
+          catchError(this.handleError<Todo[]>('filterTodos', []))
+        )
+        .subscribe();
     } else {
       this.messageService.add('TodoService: filtering todos: All');
-      return this.http.get<Todo[]>(this.todosUrl).pipe(
-        tap((todos) => {
-          this.log('filtered todos');
-          this._todos = todos;
-          TodoService.count = this._todos.length;
-          this.todosSubject.next(this._todos);
-        }),
-        catchError(this.handleError<Todo[]>('filterTodos', []))
-      );
+      this.http
+        .get<Todo[]>(this.todosUrl)
+        .pipe(
+          tap((todos) => {
+            this.log('filtered todos');
+            this._todos = todos;
+            TodoService.count = this._todos.length;
+            this.todosSubject.next(this._todos);
+          }),
+          catchError(this.handleError<Todo[]>('filterTodos', []))
+        )
+        .subscribe();
     }
   }
 
