@@ -18,6 +18,7 @@ export class AppComponent {
 
 
   ngOnInit() {
-    this.todoService.getTodos().subscribe();
+    //this.todoService.getTodos().subscribe();
+
   }
 }

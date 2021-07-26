@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { MessageService } from '../message.service';
 import { Todo } from '../todo';
 import { TodoService } from '../todo.service';
+import * as fromTodo from '../todo.reducer';
+import { AppState } from '../app-state';
+import * as TodoActions from '../todo.actions';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-todos',
@@ -15,11 +20,14 @@ export class TodosComponent implements OnInit {
 
   constructor(
     private todoService: TodoService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit() {
-    this.todoService.todos.subscribe((todos) => (this.todos = todos));
+    this.store.select(fromTodo.selectTodos).subscribe((todos) => {
+      this.todos = todos;
+    });
   }
 
   onSelect(todo: Todo): void {

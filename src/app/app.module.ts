@@ -24,6 +24,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DeleteMessageDialogComponent } from './delete-message-dialog/delete-message-dialog.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { TodoContent } from './todo-content/todo-content.component';
+import { StoreModule } from '@ngrx/store';
+import * as fromTodo from './todo.reducer';
 
 @NgModule({
   declarations: [
@@ -55,6 +57,7 @@ import { TodoContent } from './todo-content/todo-content.component';
     MatToolbarModule,
     MatDialogModule,
     FlexLayoutModule,
+    StoreModule.forRoot({todos: fromTodo.todoReducer}),
   ],
   providers: [
     {

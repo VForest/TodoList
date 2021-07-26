@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { TodoService } from '../todo.service';
 import { Todo } from '../todo';
+import { Store } from '@ngrx/store';
+import { AppState } from '../app-state';
+import * as fromTodo from '../todo.reducer';
+import * as TodoActions from '../todo.actions';
 
 @Component({
   selector: 'app-searchbar',
@@ -8,7 +12,7 @@ import { Todo } from '../todo';
   styleUrls: ['./searchbar.component.scss'],
 })
 export class SearchbarComponent implements OnInit {
-  constructor(private todoService: TodoService) {}
+  constructor(private todoService: TodoService, private store: Store<AppState>) {}
 
   ngOnInit(): void {}
 
