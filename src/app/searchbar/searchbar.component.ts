@@ -1,32 +1,45 @@
-import { Component, OnInit } from '@angular/core';
-import { TodoService } from '../todo.service';
-import { Todo } from '../todo';
-import { Store } from '@ngrx/store';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { select, Store } from '@ngrx/store';
 import { AppState } from '../app-state';
-import * as fromTodo from '../todo.reducer';
 import * as TodoActions from '../todo.actions';
+import { FilterEnum } from '../filter-enum';
+import * as fromTodo from '../todo.reducer';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-searchbar',
   templateUrl: './searchbar.component.html',
   styleUrls: ['./searchbar.component.scss'],
 })
-export class SearchbarComponent implements OnInit {
-  constructor(private todoService: TodoService, private store: Store<AppState>) {}
+export class SearchbarComponent implements OnInit, OnDestroy {
+  selected = FilterEnum.ALL;
+  filterEnum = FilterEnum;
+  destroy = new Subject();
 
-  ngOnInit(): void {}
+  constructor(private store: Store<AppState>) {}
 
-  selected = '';
+  ngOnInit() {
+    this.store
+      .pipe(select(fromTodo.selectFilter), takeUntil(this.destroy))
+      .subscribe((filter) => {
+        this.selected = filter;
+      });
+  }
+
+  ngOnDestroy() {
+    this.destroy.next();
+  }
 
   add(todoDesc: string): void {
     todoDesc = todoDesc.trim();
     if (!todoDesc) {
       return;
     }
-    this.todoService.addTodo(todoDesc).subscribe();
+    this.store.dispatch(TodoActions.addTodo({ desc: todoDesc }));
   }
 
-  filterTodos(value: string): void {
-    this.todoService.filterTodos(value);
+  filterTodos(value: FilterEnum): void {
+    this.store.dispatch(TodoActions.setFilter({ filter: value }));
   }
 }

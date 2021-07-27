@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
-import { TodoService } from './todo.service';
-import { Todo } from './todo';
-import { BehaviorSubject } from 'rxjs';
-import {InMemoryDataService} from './in-memory-data.service'
+
 
 
 @Component({
@@ -12,13 +9,4 @@ import {InMemoryDataService} from './in-memory-data.service'
 })
 export class AppComponent {
   title = 'Todo list';
-
-
-  constructor(private todoService: TodoService) {}
-
-
-  ngOnInit() {
-    //this.todoService.getTodos().subscribe();
-
-  }
 }

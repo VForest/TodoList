@@ -18,10 +18,12 @@
     <div class="field">
       <mat-form-field>
         <mat-label>Select</mat-label>
-        <mat-select [(value)]="selected" (selectionChange)="filterTodos(selected)">
-          <mat-option value="all">All</mat-option>
-          <mat-option value="completed">Completed</mat-option>
-          <mat-option value="uncompleted">Uncompleted</mat-option>
+        <mat-select
+          [value]="selected"
+        >
+          <mat-option (click)="filterTodos(filterEnum.ALL)" [value]="filterEnum.ALL">All</mat-option>
+          <mat-option (click)="filterTodos(filterEnum.COMPLETE)" [value]="filterEnum.COMPLETE">Completed</mat-option>
+          <mat-option (click)="filterTodos(filterEnum.INCOMPLETE)" [value]="filterEnum.INCOMPLETE">Incompleted</mat-option>
         </mat-select>
       </mat-form-field>
     </div>

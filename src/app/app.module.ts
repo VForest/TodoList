@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-
 import { AppComponent } from './app.component';
 import { TodosComponent } from './todos/todos.component';
 import { SearchbarComponent } from './searchbar/searchbar.component';
@@ -26,6 +25,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { TodoContent } from './todo-content/todo-content.component';
 import { StoreModule } from '@ngrx/store';
 import * as fromTodo from './todo.reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -58,6 +58,9 @@ import * as fromTodo from './todo.reducer';
     MatDialogModule,
     FlexLayoutModule,
     StoreModule.forRoot({todos: fromTodo.todoReducer}),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+    }),
   ],
   providers: [
     {
