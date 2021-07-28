@@ -1,5 +1,6 @@
 export interface Todo {
-  id: number;
+  order: number;
+  id: String;
   desc: string;
   isCompleted: boolean;
 }

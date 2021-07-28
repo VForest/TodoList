@@ -4,8 +4,9 @@ import { AppState } from './app-state';
 import { FilterEnum } from './filter-enum';
 import { Todo } from './todo';
 import * as TodoActions from './todo.actions';
+import {v4 as uuid} from 'uuid';
 
-let idCounter = 4;
+let orderCounter = 4;
 
 export interface TodoState {
   todos: Todo[];
@@ -14,10 +15,10 @@ export interface TodoState {
 
 export const initialState: TodoState = {
   todos: [
-    { id: 1, desc: 'Faire la vaisselle', isCompleted: false },
-    { id: 2, desc: `Faire l'épicerie`, isCompleted: false },
-    { id: 3, desc: 'Faire le ménage', isCompleted: false },
-    { id: 4, desc: 'Mettre les poubelles au chemin', isCompleted: false },
+    { id: uuid(), order: 1, desc: 'Faire la vaisselle', isCompleted: false },
+    { id: uuid(), order: 2, desc: `Faire l'épicerie`, isCompleted: false },
+    { id: uuid(), order: 3, desc: 'Faire le ménage', isCompleted: false },
+    { id: uuid(), order: 4, desc: 'Mettre les poubelles au chemin', isCompleted: false },
   ],
   filter: FilterEnum.ALL,
 };
@@ -27,7 +28,7 @@ export const todoReducer = createReducer(
   on(TodoActions.addTodo, (state, { desc }) => {
     return {
       ...state,
-      todos: [...state.todos, { id: ++idCounter, desc, isCompleted: false }],
+      todos: [...state.todos, { id: uuid(), order: ++orderCounter, desc, isCompleted: false }],
     };
   }),
   on(TodoActions.deleteTodo, (state, { id }) => {

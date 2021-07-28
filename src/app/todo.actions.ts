@@ -8,12 +8,12 @@ export const addTodo = createAction(
 
 export const deleteTodo = createAction(
   '[Todo] Delete Todo',
-  props<{ id: number }>()
+  props<{ id: String }>()
 );
 
 export const completeTodo = createAction(
   '[Todo] Complete Todo',
-  props<{ id: number }>()
+  props<{ id: String }>()
 );
 
 export const setFilter = createAction(

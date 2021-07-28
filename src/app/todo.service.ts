@@ -4,6 +4,7 @@ import { Observable, of, BehaviorSubject } from 'rxjs';
 import { MessageService } from './message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap, filter } from 'rxjs/operators';
+import { v4 as uuid } from 'uuid';
 
 @Injectable({
   providedIn: 'root',
@@ -43,7 +44,8 @@ export class TodoService {
   addTodo(todoDesc: string): Observable<Todo> {
     TodoService.count++;
     let todo: Todo = {
-      id: TodoService.count,
+      id: uuid(),
+      order: TodoService.count,
       desc: todoDesc,
       isCompleted: false,
     };
@@ -57,7 +59,7 @@ export class TodoService {
     );
   }
 
-  deleteTodo(id: number): Observable<Todo> {
+  deleteTodo(id: String): Observable<Todo> {
     const url = `${this.todosUrl}/${id}`;
     return this.http.delete<Todo>(url, this.httpOptions).pipe(
       tap((_) => {
