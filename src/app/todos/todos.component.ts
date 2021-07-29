@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { MessageService } from '../message.service';
 import { Todo } from '../todo';
-import { TodoService } from '../todo.service';
 import * as fromTodo from '../todo.reducer';
 import { AppState } from '../app-state';
 import * as TodoActions from '../todo.actions';

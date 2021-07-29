@@ -4,7 +4,6 @@ import { Observable, of, BehaviorSubject } from 'rxjs';
 import { MessageService } from './message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap, filter, switchMap } from 'rxjs/operators';
-import { v4 as uuid } from 'uuid';
 
 @Injectable({
   providedIn: 'root',

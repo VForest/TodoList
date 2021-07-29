@@ -1,10 +1,8 @@
-import { state } from '@angular/animations';
 import { Action, createReducer, createSelector, on } from '@ngrx/store';
 import { AppState } from './app-state';
 import { FilterEnum } from './filter-enum';
 import { Todo } from './todo';
 import * as TodoActions from './todo.actions';
-import { v4 as uuid } from 'uuid';
 
 let orderCounter = 4;
 
