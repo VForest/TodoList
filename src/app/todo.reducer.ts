@@ -4,7 +4,7 @@ import { AppState } from './app-state';
 import { FilterEnum } from './filter-enum';
 import { Todo } from './todo';
 import * as TodoActions from './todo.actions';
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
 
 let orderCounter = 4;
 
@@ -14,30 +14,31 @@ export interface TodoState {
 }
 
 export const initialState: TodoState = {
-  todos: [
-    { id: uuid(), order: 1, desc: 'Faire la vaisselle', isCompleted: false },
-    { id: uuid(), order: 2, desc: `Faire l'épicerie`, isCompleted: false },
-    { id: uuid(), order: 3, desc: 'Faire le ménage', isCompleted: false },
-    { id: uuid(), order: 4, desc: 'Mettre les poubelles au chemin', isCompleted: false },
-  ],
+  todos: [],
   filter: FilterEnum.ALL,
 };
 
 export const todoReducer = createReducer(
   initialState,
-  on(TodoActions.addTodo, (state, { desc }) => {
+  on(TodoActions.getTodosSuccess, (state, { todos }) => {
     return {
       ...state,
-      todos: [...state.todos, { id: uuid(), order: ++orderCounter, desc, isCompleted: false }],
+      todos: todos,
     };
   }),
-  on(TodoActions.deleteTodo, (state, { id }) => {
+  on(TodoActions.addTodoSuccess, (state, { todo }) => {
     return {
       ...state,
-      todos: state.todos.filter((todo) => todo.id != id),
+      todos: [...state.todos, todo],
     };
   }),
-  on(TodoActions.completeTodo, (state, { id }) => {
+  on(TodoActions.deleteTodoSuccess, (state, { id }) => {
+    return {
+      ...state,
+      todos: state.todos.filter((todo) => todo.id !== id),
+    };
+  }),
+  on(TodoActions.completeTodoSuccess, (state, { id }) => {
     let todoToModify = state.todos.find((todo) => todo.id === id);
     if (todoToModify) {
       let objModifier = { ...todoToModify };
@@ -54,8 +55,8 @@ export const todoReducer = createReducer(
   on(TodoActions.setFilter, (state, { filter }) => {
     return {
       ...state,
-      filter
-    }
+      filter,
+    };
   })
 );
 

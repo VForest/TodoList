@@ -2,7 +2,7 @@
   <mat-list-item *ngFor="let todo of todos" (click)="onSelect(todo)">
     <p matLine>
       <span class="todo" [class.completed]="todo.isCompleted"
-        >#{{ todo.id }}: {{ todo.desc }}</span
+        >#{{ todo.order }}: {{ todo.desc }}</span
       >
     </p>
     <button

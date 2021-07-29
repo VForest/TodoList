@@ -26,6 +26,8 @@ import { TodoContent } from './todo-content/todo-content.component';
 import { StoreModule } from '@ngrx/store';
 import * as fromTodo from './todo.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { TodoEffects } from './todo.effect';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -41,12 +43,6 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
-    // and returns simulated server responses.
-    // Remove it when a real server is ready to receive requests.
-    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
-      dataEncapsulation: false,
-    }),
     BrowserAnimationsModule,
     MatFormFieldModule,
     MatSelectModule,
@@ -58,6 +54,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     MatDialogModule,
     FlexLayoutModule,
     StoreModule.forRoot({todos: fromTodo.todoReducer}),
+    EffectsModule.forRoot([TodoEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
     }),

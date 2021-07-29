@@ -26,6 +26,7 @@ export class TodosComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.store.dispatch(TodoActions.getTodos());
     this.store
       .pipe(select(fromTodo.filterTodos), takeUntil(this.destroy))
       .subscribe((todos) => {
@@ -44,11 +45,11 @@ export class TodosComponent implements OnInit, OnDestroy {
 
   delete(todo: Todo): void {
     this.messageService.add(`TodoService: deleting todo id=${todo.id}`);
-    this.store.dispatch(TodoActions.deleteTodo({ id: todo.id }));
+    this.store.dispatch(TodoActions.deleteTodo({ id: todo.id || '' }));
   }
 
   complete(todo: Todo): void {
     this.messageService.add(`TodoService: completing todo id=${todo.id}`);
-    this.store.dispatch(TodoActions.completeTodo({ id: todo.id }));
+    this.store.dispatch(TodoActions.completeTodo({ id: todo.id || '' , value: !todo.isCompleted}));
   }
 }

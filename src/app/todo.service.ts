@@ -3,7 +3,7 @@ import { Todo } from './todo';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { MessageService } from './message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, map, tap, filter } from 'rxjs/operators';
+import { catchError, map, tap, filter, switchMap } from 'rxjs/operators';
 import { v4 as uuid } from 'uuid';
 
 @Injectable({
@@ -27,10 +27,11 @@ export class TodoService {
   }
 
   private todosUrl = 'api/todos';
+  private serverUrl = 'http://localhost:3000/todos';
 
   getTodos(): Observable<Todo[]> {
     this.messageService.add('TodoService: fetching todos');
-    return this.http.get<Todo[]>(this.todosUrl).pipe(
+    return this.http.get<Todo[]>(this.serverUrl).pipe(
       tap((todos) => {
         this.log('fetched todos');
         this._todos = todos;
@@ -42,43 +43,37 @@ export class TodoService {
   }
 
   addTodo(todoDesc: string): Observable<Todo> {
-    TodoService.count++;
     let todo: Todo = {
-      id: uuid(),
-      order: TodoService.count,
+      order: ++TodoService.count,
       desc: todoDesc,
-      isCompleted: false,
     };
-    return this.http.post<Todo>(this.todosUrl, todo, this.httpOptions).pipe(
+    return this.http.post<Todo>(this.serverUrl, todo, this.httpOptions).pipe(
       tap(() => {
         this.log(`added todo with id=${todo.id}`);
-        this._todos = [...this._todos, todo];
-        this.todosSubject.next(this._todos);
       }),
       catchError(this.handleError<Todo>('addTodo'))
     );
   }
 
-  deleteTodo(id: String): Observable<Todo> {
-    const url = `${this.todosUrl}/${id}`;
-    return this.http.delete<Todo>(url, this.httpOptions).pipe(
-      tap((_) => {
+  deleteTodo(id: string): Observable<unknown> {
+    const url = `${this.serverUrl}/${id}`;
+    return this.http.delete(url, this.httpOptions).pipe(
+      map(() => {
         this.log(`deleted todo id=${id}`);
-        this._todos = this._todos.filter((todo) => todo.id != id);
-        this.todosSubject.next(this._todos);
+        return id;
       }),
-      catchError(this.handleError<Todo>('deleteTodo'))
+      catchError(this.handleError('deleteTodo'))
     );
   }
 
-  completeTodo(todo: Todo): Observable<Todo> {
-    todo.isCompleted = !todo.isCompleted;
-    return this.http.put<Todo>(this.todosUrl, todo, this.httpOptions).pipe(
-      tap((_) => {
-        this.log(`Completed todo id=${todo.id}`);
-        this.todosSubject.next(this._todos);
+  completeTodo(id: string, value: boolean): Observable<string> {
+    const url = `${this.serverUrl}/${id}`;
+    return this.http.patch(url, { isCompleted: value }, this.httpOptions).pipe(
+      map((_) => {
+        this.log(`Completed todo id=${id}`);
+        return id;
       }),
-      catchError(this.handleError<Todo>('completeTodo'))
+      catchError(this.handleError<string>('completeTodo'))
     );
   }
 
