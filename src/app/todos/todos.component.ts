@@ -39,16 +39,16 @@ export class TodosComponent implements OnInit, OnDestroy {
 
   onSelect(todo: Todo): void {
     this.selectedTodo = todo;
-    this.messageService.add(`TodosComponent: Selected todo id=${todo.id}`);
+    this.messageService.add(`TodosComponent: Selected todo with order=${todo.order}`);
   }
 
   delete(todo: Todo): void {
-    this.messageService.add(`TodoService: deleting todo id=${todo.id}`);
+    this.messageService.add(`TodoService: deleting todo with order=${todo.order}`);
     this.store.dispatch(TodoActions.deleteTodo({ id: todo.id || '' }));
   }
 
   complete(todo: Todo): void {
-    this.messageService.add(`TodoService: completing todo id=${todo.id}`);
+    this.messageService.add(`TodoService: completing todo with order=${todo.order}`);
     this.store.dispatch(TodoActions.completeTodo({ id: todo.id || '' , value: !todo.isCompleted}));
   }
 }

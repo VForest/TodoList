@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Todo } from './todo';
-import { Observable, of, BehaviorSubject } from 'rxjs';
+import { Observable, of, BehaviorSubject, throwError } from 'rxjs';
 import { MessageService } from './message.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { catchError, map, tap, filter, switchMap } from 'rxjs/operators';
 
 @Injectable({
@@ -37,7 +41,7 @@ export class TodoService {
         TodoService.count = this._todos.length;
         this.todosSubject.next(this._todos);
       }),
-      catchError(this.handleError<Todo[]>('getTodos', []))
+      catchError(this.handleError)
     );
   }
 
@@ -48,9 +52,9 @@ export class TodoService {
     };
     return this.http.post<Todo>(this.serverUrl, todo, this.httpOptions).pipe(
       tap(() => {
-        this.log(`added todo with id=${todo.id}`);
+        this.log(`added todo with order=${todo.order}`);
       }),
-      catchError(this.handleError<Todo>('addTodo'))
+      catchError(this.handleError)
     );
   }
 
@@ -61,7 +65,7 @@ export class TodoService {
         this.log(`deleted todo id=${id}`);
         return id;
       }),
-      catchError(this.handleError('deleteTodo'))
+      catchError(this.handleError)
     );
   }
 
@@ -72,7 +76,7 @@ export class TodoService {
         this.log(`Completed todo id=${id}`);
         return id;
       }),
-      catchError(this.handleError<string>('completeTodo'))
+      catchError(this.handleError)
     );
   }
 
@@ -95,7 +99,7 @@ export class TodoService {
             this._todos = todos;
             this.todosSubject.next(this._todos);
           }),
-          catchError(this.handleError<Todo[]>('filterTodos', []))
+          catchError(this.handleError)
         )
         .subscribe();
     } else if (this.filtervalue === 'uncompleted') {
@@ -111,7 +115,7 @@ export class TodoService {
             this._todos = todos;
             this.todosSubject.next(this._todos);
           }),
-          catchError(this.handleError<Todo[]>('filterTodos', []))
+          catchError(this.handleError)
         )
         .subscribe();
     } else {
@@ -125,7 +129,7 @@ export class TodoService {
             TodoService.count = this._todos.length;
             this.todosSubject.next(this._todos);
           }),
-          catchError(this.handleError<Todo[]>('filterTodos', []))
+          catchError(this.handleError)
         )
         .subscribe();
     }
@@ -141,16 +145,15 @@ export class TodoService {
    * @param operation - name of the operation that failed
    * @param result - optional value to return as the observable result
    */
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
+  private handleError(error: HttpErrorResponse) {
+    if (error.status === 0) {
+      //Client side error
+      console.error(error.error);
+    } else {
+      //server side error
+      console.error(`Server error status: ${error.status}. Error message:  ${error.error}`);
+    }
 
-      // TODO: better job of transforming error for user consumption
-      this.log(`${operation} failed: ${error.message}`);
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
+    return throwError('Your request did not work, please try again');
   }
 }
