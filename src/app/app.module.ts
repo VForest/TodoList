@@ -26,6 +26,7 @@ import * as fromTodo from './todo.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { TodoEffects } from './todo.effect';
 import { EffectsModule } from '@ngrx/effects';
+import { ErrorMessageDialogComponent } from './error-message-dialog/error-message-dialog.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { EffectsModule } from '@ngrx/effects';
     SearchbarComponent,
     MessagesComponent,
     DeleteMessageDialogComponent,
-    TodoContent
+    TodoContent,
+    ErrorMessageDialogComponent
   ],
   entryComponents: [DeleteMessageDialogComponent],
   imports: [

@@ -8,6 +8,8 @@ import {
   HttpHeaders,
 } from '@angular/common/http';
 import { catchError, map, tap, filter, switchMap } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { ErrorMessageDialogComponent } from './error-message-dialog/error-message-dialog.component';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +24,8 @@ export class TodoService {
 
   constructor(
     private messageService: MessageService,
-    private http: HttpClient
+    private http: HttpClient,
+    public dialog: MatDialog
   ) {}
 
   private log(message: string) {
@@ -41,7 +44,7 @@ export class TodoService {
         TodoService.count = this._todos.length;
         this.todosSubject.next(this._todos);
       }),
-      catchError(this.handleError)
+      catchError((e)=>this.handleError(e))
     );
   }
 
@@ -54,7 +57,7 @@ export class TodoService {
       tap(() => {
         this.log(`added todo with order=${todo.order}`);
       }),
-      catchError(this.handleError)
+      catchError((e) => this.handleError(e))
     );
   }
 
@@ -65,7 +68,7 @@ export class TodoService {
         this.log(`deleted todo id=${id}`);
         return id;
       }),
-      catchError(this.handleError)
+      catchError((e) => this.handleError(e))
     );
   }
 
@@ -76,7 +79,7 @@ export class TodoService {
         this.log(`Completed todo id=${id}`);
         return id;
       }),
-      catchError(this.handleError)
+      catchError((e) => this.handleError(e))
     );
   }
 
@@ -99,7 +102,7 @@ export class TodoService {
             this._todos = todos;
             this.todosSubject.next(this._todos);
           }),
-          catchError(this.handleError)
+          catchError((e) => this.handleError(e))
         )
         .subscribe();
     } else if (this.filtervalue === 'uncompleted') {
@@ -115,7 +118,7 @@ export class TodoService {
             this._todos = todos;
             this.todosSubject.next(this._todos);
           }),
-          catchError(this.handleError)
+          catchError((e) => this.handleError(e))
         )
         .subscribe();
     } else {
@@ -129,7 +132,7 @@ export class TodoService {
             TodoService.count = this._todos.length;
             this.todosSubject.next(this._todos);
           }),
-          catchError(this.handleError)
+          catchError((e) => this.handleError(e))
         )
         .subscribe();
     }
@@ -151,9 +154,13 @@ export class TodoService {
       console.error(error.error);
     } else {
       //server side error
-      console.error(`Server error status: ${error.status}. Error message:  ${error.error}`);
+      console.error(
+        `Server error status: ${error.status}. Error message:  ${error.error}`
+      );
     }
-
+    this.dialog.open(ErrorMessageDialogComponent, {
+      data: {errorStatus: error.status, errorError: error.error}
+    });
     return throwError('Your request did not work, please try again');
   }
 }

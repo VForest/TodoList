@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>There was an error with your request</h2>
+<ng-container class="content">
+  <mat-dialog-content
+    ><img
+      src="https://st4.depositphotos.com/24038622/27074/v/1600/depositphotos_270744850-stock-illustration-sick-laptop-cartoon-illustration-sick.jpg"
+      height="180px"
+      width="180px"
+      style="position: relative; left: 35%"
+    /><br />
+    Something went wrong and the server couldn't handle your resquest. Don't
+    worry, it's not your fault.<br />Try your request again, and if you face the
+    same error, contact the site admin.<ng-container *ngIf="details"
+      ><br /><br />
+      <div class="error-details">
+        Server error status: {{ errorStatus }}<br />Server error:
+        {{ errorError }}
+      </div></ng-container
+    ></mat-dialog-content
+  ></ng-container
+>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close mat-dialog-close="ok">Ok</button>
+  <button mat-button (click)="showDetails()">
+    {{ details ? "Hide details" : "Show details" }}
+  </button>
+</mat-dialog-actions>
