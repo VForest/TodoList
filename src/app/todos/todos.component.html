@@ -1,8 +1,8 @@
 <mat-list>
-  <mat-list-item *ngFor="let todo of todos" (click)="onSelect(todo)">
-    <p matLine>
+  <mat-list-item *ngFor="let todo of todos; let i = index">
+    <p matLine (click)="onSelect(todo)">
       <span class="todo" [class.completed]="todo.isCompleted"
-        >#{{ todo.order }}: {{ todo.desc }}</span
+        >#{{ i + 1 }}: {{ todo.desc }}</span
       >
     </p>
     <button

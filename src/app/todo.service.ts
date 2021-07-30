@@ -50,12 +50,11 @@ export class TodoService {
 
   addTodo(todoDesc: string): Observable<Todo> {
     let todo: Todo = {
-      order: ++TodoService.count,
       desc: todoDesc,
     };
     return this.http.post<Todo>(this.serverUrl, todo, this.httpOptions).pipe(
       tap(() => {
-        this.log(`added todo with order=${todo.order}`);
+        this.log(`added new todo`);
       }),
       catchError((e) => this.handleError(e))
     );
