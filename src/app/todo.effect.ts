@@ -29,8 +29,12 @@ export class TodoEffects {
   completeTodo$ = createEffect(() =>
     this.actions$.pipe(
       ofType(todoActions.TodoActions.completeTodo),
-      switchMap((action: { id: string, value: boolean }) => {
-        return this.todoService.completeTodo(action.id, action.value);
+      switchMap((action: { id: string; value: boolean; order: number }) => {
+        return this.todoService.completeTodo(
+          action.id,
+          action.value,
+          action.order
+        );
       }),
       map((id) => todoActions.completeTodoSuccess({ id }))
     )
@@ -39,8 +43,8 @@ export class TodoEffects {
   deleteTodo$ = createEffect(() =>
     this.actions$.pipe(
       ofType(todoActions.TodoActions.deleteTodo),
-      switchMap((action: { id: string }) => {
-        return this.todoService.deleteTodo(action.id);
+      switchMap((action: { id: string; order: number }) => {
+        return this.todoService.deleteTodo(action.id, action.order);
       }),
       map((id) => todoActions.deleteTodoSuccess({ id: id as string }))
     )

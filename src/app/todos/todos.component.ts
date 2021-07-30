@@ -46,28 +46,37 @@ export class TodosComponent implements OnInit, OnDestroy {
 
   delete(todo: Todo): void {
     this.messageService.add(
-      `TodoService: deleting todo with order=${this.todos.indexOf(todo) + 1}`
+      `TodoService: Deleting todo with order=${this.todos.indexOf(todo) + 1}`
     );
-    this.store.dispatch(TodoActions.deleteTodo({ id: todo.id || '' }));
+    this.store.dispatch(
+      TodoActions.deleteTodo({
+        id: todo.id || '',
+        order: this.todos.indexOf(todo) + 1,
+      })
+    );
   }
 
   complete(todo: Todo): void {
     if (todo.isCompleted) {
       this.messageService.add(
-        `TodoService: resetting to uncomplete todo with order=${
+        `TodoService: Resetting to uncomplete todo with order=${
           this.todos.indexOf(todo) + 1
         }`
       );
     } else {
       this.messageService.add(
-        `TodoService: completing todo with order=${
+        `TodoService: Completing todo with order=${
           this.todos.indexOf(todo) + 1
         }`
       );
     }
 
     this.store.dispatch(
-      TodoActions.completeTodo({ id: todo.id || '', value: !todo.isCompleted })
+      TodoActions.completeTodo({
+        id: todo.id || '',
+        value: !todo.isCompleted,
+        order: this.todos.indexOf(todo) + 1,
+      })
     );
   }
 }

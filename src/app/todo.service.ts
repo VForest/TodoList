@@ -44,7 +44,7 @@ export class TodoService {
         TodoService.count = this._todos.length;
         this.todosSubject.next(this._todos);
       }),
-      catchError((e)=>this.handleError(e))
+      catchError((e) => this.handleError(e))
     );
   }
 
@@ -60,22 +60,27 @@ export class TodoService {
     );
   }
 
-  deleteTodo(id: string): Observable<unknown> {
+  deleteTodo(id: string, order: number): Observable<unknown> {
     const url = `${this.serverUrl}/${id}`;
     return this.http.delete(url, this.httpOptions).pipe(
       map(() => {
-        this.log(`deleted todo id=${id}`);
+        this.log(`Deleted todo order=${order}`);
         return id;
       }),
       catchError((e) => this.handleError(e))
     );
   }
 
-  completeTodo(id: string, value: boolean): Observable<string> {
+  completeTodo(id: string, value: boolean, order: number): Observable<string> {
     const url = `${this.serverUrl}/${id}`;
     return this.http.patch(url, { isCompleted: value }, this.httpOptions).pipe(
       map((_) => {
-        this.log(`Completed todo id=${id}`);
+        if (value) {
+          this.log(`Completed todo with order=${order}`);
+        } else {
+          this.log(`Reset to uncomplete todo with order=${order}`);
+        }
+
         return id;
       }),
       catchError((e) => this.handleError(e))
@@ -158,7 +163,7 @@ export class TodoService {
       );
     }
     this.dialog.open(ErrorMessageDialogComponent, {
-      data: {errorStatus: error.status, errorError: error.error}
+      data: { errorStatus: error.status, errorError: error.error },
     });
     return throwError('Your request did not work, please try again');
   }

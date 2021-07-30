@@ -33,7 +33,7 @@ export const addTodoSuccess = createAction(
 
 export const deleteTodo = createAction(
   TodoActions.deleteTodo,
-  props<{ id: string }>()
+  props<{ id: string; order: number }>()
 );
 
 export const deleteTodoSuccess = createAction(
@@ -43,7 +43,7 @@ export const deleteTodoSuccess = createAction(
 
 export const completeTodo = createAction(
   TodoActions.completeTodo,
-  props<{ id: string; value: boolean }>()
+  props<{ id: string; value: boolean; order: number }>()
 );
 
 export const completeTodoSuccess = createAction(
